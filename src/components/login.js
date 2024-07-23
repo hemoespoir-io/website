@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "C:/Users/cele/hemoespoir.io/website/src/image/nabil2.PNG";
-import logoImage from "C:/Users/cele/hemoespoir.io/website/src/image/Capture.PNG";
+import backgroundImage from "C:/Users/cele/hemoespoir.io/website/src/image/photo_background_page_acceuil.PNG";
+import logoImage from "C:/Users/cele/hemoespoir.io/website/src/image/logo_hemoespoir.PNG"; 
 
 function Login() {
   const [username, setUsername] = useState("");
