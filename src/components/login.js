@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
-import backgroundImage from "C:/Users/cele/hemoespoir.io/website/src/image/photo_background_page_acceuil.PNG";
-import logoImage from "C:/Users/cele/hemoespoir.io/website/src/image/logo_hemoespoir.PNG";
+import backgroundImage from "../image/fiche_technique_background2.PNG";
+import logoImage from "../image/logo_hemoespoir.PNG";
+
+const backend_url = 'http://localhost:5000/'; // Variable globale pour l'URL du serveur backend
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -17,7 +19,7 @@ function Login() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://127.0.0.1:5000/login", {
+      const response = await fetch(`${backend_url}login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -113,7 +115,7 @@ const styles = {
     backgroundPosition: "center",
     position: "relative",
     fontFamily: "'Roboto', sans-serif",
-    filter: "brightness(105%) contrast(100%)", // Augmenter légèrement la luminosité
+    filter: "brightness(105%) contrast(100%)",
   },
   overlay: {
     position: "absolute",
@@ -121,7 +123,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Réduire l'opacité pour plus de clarté
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   container: {
     position: "relative",
@@ -177,7 +179,7 @@ const styles = {
   },
   input: {
     width: "100%",
-    padding: "12px 12px 12px 40px", // Padding left increased for icon space
+    padding: "12px 12px 12px 40px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     marginBottom: "10px",

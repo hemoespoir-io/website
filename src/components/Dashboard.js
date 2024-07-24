@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from 'C:/Users/cele/hemoespoir.io/website/src/image/fiche_technique_background2.PNG'; // Ajusté pour utilisation relative
-import axios from 'axios'; // Importation d'axios pour les requêtes HTTP
+import backgroundImage from '../image/fiche_technique_background2.PNG'; 
+import axios from 'axios'; 
+const backend_url = 'http://localhost:5000/'; 
 
 function Dashboard() {
-  const [data, setData] = useState(''); // État initialisé comme chaîne vide pour éviter les erreurs de null
-
+  const [data, setData] = useState(''); 
   useEffect(() => {
-    // Fonction pour charger les données de l'API
+   
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/fichemedical?patientid=9'); // URL de l'API, ajustez selon votre configuration
-        setData(response.data); // Stockage des données reçues dans l'état
+        const response = await axios.get(`${backend_url}fichemedical?patientid=9`);
+        setData(response.data); 
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        setData('Erreur lors de la récupération des données'); // Gestion des erreurs
+        setData('Erreur lors de la récupération des données'); 
       }
     };
 
-    fetchData(); // Appel de fetchData lors du montage du composant
-  }, []); // Les dépendances vides indiquent que l'effet s'exécute une fois après le premier rendu
-
+    fetchData(); 
+  }, []); 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Fiche technique</h1>
