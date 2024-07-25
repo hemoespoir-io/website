@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import backgroundImage from '../image/fiche_technique_background2.PNG'; 
 import axios from 'axios'; 
-const backend_url = 'http://localhost:5000/'; 
+import config from '../config'; 
 
 function Dashboard() {
   const [data, setData] = useState(''); 
+
   useEffect(() => {
-   
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${backend_url}fichemedical?patientid=9`);
+        const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=9`); // Utiliser la configuration ici
         setData(response.data); 
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
@@ -19,6 +19,7 @@ function Dashboard() {
 
     fetchData(); 
   }, []); 
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Fiche technique</h1>

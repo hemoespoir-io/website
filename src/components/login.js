@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import backgroundImage from "../image/fiche_technique_background2.PNG";
 import logoImage from "../image/logo_hemoespoir.PNG";
-
-const backend_url = 'http://localhost:5000/'; // Variable globale pour l'URL du serveur backend
+import config from '../config'; 
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -19,7 +18,7 @@ function Login() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${backend_url}login`, {
+      const response = await fetch(`${config.BACKEND_URL}login`, { // Utiliser la configuration ici
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
