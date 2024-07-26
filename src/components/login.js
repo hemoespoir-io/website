@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
-import backgroundImage from "../image/fiche_technique_background2.PNG";
+import backgroundImage from "../image/photo_background_page_acceuil.PNG";
 import logoImage from "../image/logo_hemoespoir.PNG";
 import config from '../config'; 
 
