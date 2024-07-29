@@ -19,6 +19,21 @@ function Dashboard() {
 
     fetchData(); 
   }, []); 
+
+  const handleMouseOver = (e) => {
+    e.target.style.backgroundColor = "#1F8A70";
+    e.target.style.transform = "scale(1.05)";
+  };
+
+  const handleMouseOut = (e) => {
+    e.target.style.backgroundColor = "#40E0D0";
+    e.target.style.transform = "scale(1)";
+  };
+
+  const handleNavigation = (url) => {
+    window.location.href = url;
+  };
+
   return (
     <div style={pageStyle}>
       <div style={overlayStyle}></div>
