@@ -1,4 +1,4 @@
-
+// pages/RendezVous.js
 import React from 'react';
 import backgroundImage from 'C:/Users/cele/hemoespoir.io/website/src/image/background.PNG';
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from '../image/fiche_technique_background2.PNG'; 
+import backgroundImage from '../image/background.PNG'; 
 import axios from 'axios'; 
 import config from '../config'; 
 
 function Dashboard() {
-  const [data, setData] = useState(null); 
+  const [data, setData] = useState(''); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,103 +13,211 @@ function Dashboard() {
         setData(response.data); 
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        setData(null); 
+        setData('Erreur lors de la récupération des données'); 
       }
     };
 
     fetchData(); 
   }, []); 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Fiche technique</h1>
-      {data ? (
-        <div style={styles.gridContainer}>
-          <div style={styles.gridItem}><strong>Id Patient:</strong> {data.Id_Patient || '-'}</div>
-          <div style={styles.gridItem}><strong>Nom Utilisateur:</strong> {data.NomUtilisateur || '-'}</div>
-          <div style={styles.gridItem}><strong>Nom complet:</strong> {data.Nomcomplet || '-'}</div>
-          <div style={styles.gridItem}><strong>Date de naissance:</strong> {data.DateNaissance || '-'}</div>
-          <div style={styles.gridItem}><strong>Email:</strong> {data.Email || '-'}</div>
-          <div style={styles.gridItem}><strong>Téléphone:</strong> {data.Telephone || '-'}</div>
-          <div style={styles.gridItem}><strong>Adresse:</strong> {data.Adresse || '-'}</div>
-          <div style={styles.gridItem}><strong>Mot de passe:</strong> {data.Motdepasse || '-'}</div>
-          <div style={styles.gridItem}><strong>Image:</strong> {data.image || '-'}</div>
-          <div style={styles.gridItem}><strong>Groupe sanguin:</strong> {data.Groupesanguin || '-'}</div>
-          <div style={styles.gridItem}><strong>Taille:</strong> {data.Taille || '-'}</div>
-          <div style={styles.gridItem}><strong>Poids:</strong> {data.Poids || '-'}</div>
-          <div style={styles.gridItem}><strong>Sexe:</strong> {data.Sexe || '-'}</div>
-          <div style={styles.gridItem}><strong>Antécédent Mère:</strong> {data.AntecedentMere || '-'}</div>
-          <div style={styles.gridItem}><strong>Antécédent Père:</strong> {data.AntecedentPere || '-'}</div>
-          <div style={styles.gridItem}><strong>Type de Maladie:</strong> {data.TypeDeMaladie || '-'}</div>
+    <div style={pageStyle}>
+      <div style={overlayStyle}></div>
+      <div style={topMenuStyle}>
+        <button 
+          style={topMenuButtonStyle} 
+          onMouseOver={handleMouseOver} 
+          onMouseOut={handleMouseOut} 
+          onClick={() => handleNavigation('/')}
+        >
+          Accueil
+        </button>
+        <button 
+          style={topMenuButtonStyle} 
+          onMouseOver={handleMouseOver} 
+          onMouseOut={handleMouseOut} 
+          onClick={() => handleNavigation('/account')}
+        >
+          Compte
+        </button>
+        <button 
+          style={topMenuButtonStyle} 
+          onMouseOver={handleMouseOver} 
+          onMouseOut={handleMouseOut} 
+          onClick={() => handleNavigation('/logout')}
+        >
+          Déconnexion
+        </button>
+      </div>
+      <div style={contentContainerStyle}>
+        <div style={menuStyle}>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/appointments')}
+          >
+            Prendre / Consulter Rendez-vous
+          </button>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/medical-records')}
+          >
+            Dossiers Médicaux
+          </button>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/rehab-videos')}
+          >
+            Vidéo de Rééducation
+          </button>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/documents-conferences')}
+          >
+            Documents et Conférences
+          </button>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/disease-updates')}
+          >
+            Nouveautés dans la Maladie
+          </button>
+          <button 
+            style={menuButtonStyle} 
+            onMouseOver={handleMouseOver} 
+            onMouseOut={handleMouseOut} 
+            onClick={() => handleNavigation('/social-communication')}
+          >
+            Réseaux Sociaux et Communication
+          </button>
         </div>
-      ) : (
-        <p style={styles.message}>Chargement des données...</p>
-      )}
-      <button style={styles.button}>Suivant</button>
+        <div style={contentStyle}>
+          <h1 style={titleStyle}>Fiche technique</h1>
+          <p style={messageStyle}>{data ? `Bienvenue sur votre fiche technique : ${data}` : 'Chargement des données...'}</p>
+        </div>
+      </div>
     </div>
   );
 }
 
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    color: "#ffffff", 
-    fontFamily: "'Roboto', 'Helvetica Neue', Arial, sans-serif", 
-    backgroundBlendMode: "overlay", 
-    backgroundColor: "rgba(0, 0, 0, 0.7)", 
-  },
-  title: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    marginBottom: "20px",
-    textTransform: "uppercase",
-    letterSpacing: "2px",
-    color: "#40E0D0", 
-  },
-  gridContainer: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gridTemplateRows: "repeat(8, auto)",
-    gap: "10px",
-    width: "80%",
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    borderRadius: "10px",
-    padding: "20px",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    marginBottom: "20px",
-  },
-  gridItem: {
-    border: "1px solid #40E0D0",
-    padding: "10px",
-    textAlign: "left",
-    color: "#ffffff",
-  },
-  message: {
-    fontSize: "18px",
-    maxWidth: "600px",
-    textAlign: "center",
-    lineHeight: "1.6",
-    color: "#ffffff", 
-  },
-  button: {
-    marginTop: "20px",
-    padding: "10px 20px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    color: "#ffffff",
-    backgroundColor: "#40E0D0", 
-    border: "none",
-    borderRadius: "25px", 
-    cursor: "pointer",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    transition: "background-color 0.3s ease, transform 0.3s ease",
-  }
+const pageStyle = {
+  position: 'relative',
+  width: '100vw',
+  height: '100vh',
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const overlayStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  zIndex: 1,
+};
+
+const topMenuStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  padding: '10px 0',
+  width: '100%',
+  position: 'absolute',
+  top: 0,
+  zIndex: 2,
+};
+
+const topMenuButtonStyle = {
+  padding: '10px 20px',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  color: '#ffffff',
+  backgroundColor: '#40E0D0',
+  border: 'none',
+  borderRadius: '15px',
+  cursor: 'pointer',
+  margin: '0 10px',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  transition: 'background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease',
+};
+
+const contentContainerStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  flex: 1,
+  marginTop: '60px', // Add margin to avoid overlap with the top menu
+};
+
+const menuStyle = {
+  position: 'relative',
+  zIndex: 2,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  padding: '20px',
+  width: '300px',
+  borderRadius: '15px',
+  margin: '20px',
+};
+
+const menuButtonStyle = {
+  width: '100%',
+  padding: '15px 20px',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  color: '#ffffff',
+  backgroundColor: '#40E0D0',
+  border: 'none',
+  borderRadius: '25px',
+  cursor: 'pointer',
+  margin: '10px 0',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  transition: 'background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease',
+};
+
+const contentStyle = {
+  position: 'relative',
+  zIndex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 1,
+  color: '#ffffff',
+  fontFamily: "'Roboto', 'Helvetica Neue', Arial, sans-serif",
+  textAlign: 'center',
+  padding: '20px',
+};
+
+const titleStyle = {
+  fontSize: '32px',
+  fontWeight: 'bold',
+  marginBottom: '20px',
+  textTransform: 'uppercase',
+  letterSpacing: '2px',
+  color: '#40E0D0',
+};
+
+const messageStyle = {
+  fontSize: '18px',
+  maxWidth: '600px',
+  lineHeight: '1.6',
 };
 
 export default Dashboard;
