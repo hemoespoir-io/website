@@ -1,7 +1,8 @@
+// Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
-import backgroundImage from "../image/fiche_technique_background2.PNG";
+import backgroundImage from "../image/photo_background_page_acceuil.PNG";
 import logoImage from "../image/logo_hemoespoir.PNG";
 import config from '../config'; 
 
@@ -18,7 +19,7 @@ function Login() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${config.BACKEND_URL}login`, { // Utiliser la configuration ici
+      const response = await fetch(`${config.BACKEND_URL}login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -97,7 +98,7 @@ function Login() {
           data && <p style={styles.message}>Invalid login details</p>
         )}
         <p style={styles.footer}>©2024 HemoEspoir</p>
-        <a href="/admin" style={styles.adminLink}>En tant que médecin</a>
+        <button style={styles.adminLink} onClick={() => navigate('/doctor-login')}>En tant que médecin</button> {/* Mise à jour ici */}
       </div>
     </div>
   );
@@ -232,6 +233,7 @@ const styles = {
     fontSize: "12px",
     color: "#ff4081",
     textDecoration: "none",
+    cursor: "pointer", // Mise à jour ici
   },
 };
 
