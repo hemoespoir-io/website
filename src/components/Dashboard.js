@@ -10,7 +10,7 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=88`);
-        console.error("data", response.data);
+        console.log(response);
         setData(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
@@ -123,59 +123,57 @@ function Dashboard() {
             ) : (
               <table style={tableStyle}>
                 <tbody>
-                  {data.patient && data.patient[0] && data.patient[0].length > 0 ? (
-                    data.patient[0].map((patient, index) => (
-                      <React.Fragment key={index}>
-                        <tr>
-                          <th style={thStyle}>Nom Complet</th>
-                          <td style={tdStyle}>{patient.Nomcomplet}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Date de Naissance</th>
-                          <td style={tdStyle}>{new Date(patient.DateNaissance).toLocaleDateString()}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Email</th>
-                          <td style={tdStyle}>{patient.Email}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Téléphone</th>
-                          <td style={tdStyle}>{patient.Telephone}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Adresse</th>
-                          <td style={tdStyle}>{patient.Adresse}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Groupe Sanguin</th>
-                          <td style={tdStyle}>{patient.Groupesanguin}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Sexe</th>
-                          <td style={tdStyle}>{patient.Sexe}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Poids</th>
-                          <td style={tdStyle}>{patient.Poids}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Taille</th>
-                          <td style={tdStyle}>{patient.Taille}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Type de Maladie</th>
-                          <td style={tdStyle}>{patient.TypeDeMaladie}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Antécédent Mère</th>
-                          <td style={tdStyle}>{patient.AntecedentMere}</td>
-                        </tr>
-                        <tr>
-                          <th style={thStyle}>Antécédent Père</th>
-                          <td style={tdStyle}>{patient.AntecedentPere}</td>
-                        </tr>
-                      </React.Fragment>
-                    ))
+                  {data.patient && data.patient.length > 0 ? (
+                    <React.Fragment>
+                      <tr>
+                        <th style={thStyle}>Nom Complet</th>
+                        <td style={tdStyle}>{data.patient[0].Nomcomplet}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Date de Naissance</th>
+                        <td style={tdStyle}>{new Date(data.patient[0].DateNaissance).toLocaleDateString()}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Email</th>
+                        <td style={tdStyle}>{data.patient[0].Email}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Téléphone</th>
+                        <td style={tdStyle}>{data.patient[0].Telephone}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Adresse</th>
+                        <td style={tdStyle}>{data.patient[0].Adresse}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Groupe Sanguin</th>
+                        <td style={tdStyle}>{data.patient[0].Groupesanguin}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Sexe</th>
+                        <td style={tdStyle}>{data.patient[0].Sexe}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Poids</th>
+                        <td style={tdStyle}>{data.patient[0].Poids}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Taille</th>
+                        <td style={tdStyle}>{data.patient[0].Taille}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Type de Maladie</th>
+                        <td style={tdStyle}>{data.patient[0].TypeDeMaladie}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Antécédent Mère</th>
+                        <td style={tdStyle}>{data.patient[0].AntecedentMere}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Antécédent Père</th>
+                        <td style={tdStyle}>{data.patient[0].AntecedentPere}</td>
+                      </tr>
+                    </React.Fragment>
                   ) : (
                     <tr>
                       <td style={tdStyle} colSpan="2">Aucune donnée disponible</td>
