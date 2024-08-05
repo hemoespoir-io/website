@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
-import Cookies from 'js-cookie';
 import backgroundImage from "../image/photo_background_page_acceuil.PNG";
 import logoImage from "../image/logo_hemoespoir.PNG";
 import config from '../config'; 
@@ -9,7 +8,6 @@ import config from '../config';
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,18 +22,13 @@ function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      if (!response.ok) {
-        throw new Error(": Nom d'utilisateur ou mot de passe incorrect");
-      }
       const data = await response.json();
-      setData(data);
       setLoading(false);
-      if (data.patient) {
-        
-        Cookies.set('user', JSON.stringify(data), { expires: 7 }); 
+      if (response.ok && data.patient && data.patient.length > 0) {
+        localStorage.setItem('patient', JSON.stringify(data.patient[0]));
         navigate('/dashboard');
       } else {
-        setError(new Error("Invalid login details"));
+        setError(new Error("Nom d'utilisateur ou mot de passe incorrect"));
       }
     } catch (error) {
       setError(error);
@@ -94,11 +87,6 @@ function Login() {
         </form>
         {loading && <p style={styles.message}>Loading...</p>}
         {error && <p style={styles.message}>Error: {error.message}</p>}
-        {data && data.patient ? (
-          <p style={styles.message}>{JSON.stringify(data.patient)}</p>
-        ) : (
-          data && <p style={styles.message}>Invalid login details</p>
-        )}
         <p style={styles.footer}>©2024 HemoEspoir</p>
         <button style={styles.adminLink} onClick={() => navigate('/doctor-login')}>En tant que médecin</button>
       </div>
@@ -235,7 +223,7 @@ const styles = {
     fontSize: "12px",
     color: "#ff4081",
     textDecoration: "none",
-    cursor: "pointer", 
+    cursor: "pointer",
   },
 };
 

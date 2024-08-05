@@ -5,11 +5,15 @@ import config from '../config';
 
 function Dashboard() {
   const [data, setData] = useState(null);
+  const [patient, setPatient] = useState(null);
 
   useEffect(() => {
+    const storedPatient = JSON.parse(localStorage.getItem('patient'));
+    setPatient(storedPatient);
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=88`);
+        const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=${storedPatient.Id_Patient}`);
         console.log(response);
         setData(response.data);
       } catch (error) {
@@ -18,7 +22,9 @@ function Dashboard() {
       }
     };
 
-    fetchData();
+    if (storedPatient) {
+      fetchData();
+    }
   }, []);
 
   const handleMouseOver = (e) => {
