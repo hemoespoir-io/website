@@ -1,38 +1,43 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import background from '../image/background_med.PNG';
 
 function DoctorLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [patientInfo, setPatientInfo] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log('Username:', username);
     console.log('Password:', password);
 
-    const response = await fetch('http://127.0.0.1:5000/loginM', {  // Update URL to /loginM
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,  // Update field to username
-        password: password,
-      }),
-    });
+    try {
+      const response = await fetch('http://127.0.0.1:5000/loginMedecin', {  
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,  
+          password: password,
+        }),
+      });
 
-    const data = await response.json();
-    console.log('Response:', data);
+      const data = await response.json();
+      console.log('Response:', data);
 
-    if (response.ok) {
-      setPatientInfo(data.patient);
-      setErrorMessage('');
-      alert('Connexion réussie!');
-    } else {
-      setPatientInfo('');
-      setErrorMessage(data.error || 'Nom complet ou mot de passe incorrect!');
+      if (response.ok) {
+        setErrorMessage('');
+        alert('Connexion réussie!');
+        navigate('/dashboard', { state: { medecins: data.medecins } }); // Pass the medecins data to the dashboard
+      } else {
+        setErrorMessage(data.error || 'Nom complet ou mot de passe incorrect!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('Failed to fetch. Please try again later.');
     }
   };
 
@@ -100,11 +105,6 @@ function DoctorLogin() {
         {errorMessage && (
           <div style={{ color: 'red', marginTop: '20px' }}>
             {errorMessage}
-          </div>
-        )}
-        {patientInfo && (
-          <div style={{ color: 'white', marginTop: '20px' }}>
-            Informations du patient : {patientInfo}
           </div>
         )}
         <div style={{ marginTop: '20px' }}>
