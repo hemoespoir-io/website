@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from '../image/background.PNG'; 
-import axios from 'axios'; 
-import config from '../config'; 
+import backgroundImage from '../image/background.PNG';
+import axios from 'axios';
+import config from '../config';
 
 function Dashboard() {
-  const [data, setData] = useState(''); 
+  const [data, setData] = useState(null);
+  const [patient, setPatient] = useState(null);
 
   useEffect(() => {
+    const storedPatient = JSON.parse(localStorage.getItem('patient'));
+    setPatient(storedPatient);
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=9`); 
-        setData(response.data); 
+        const response = await axios.get(`${config.BACKEND_URL}fichemedical?patientid=${storedPatient.Id_Patient}`);
+        console.log(response);
+        setData(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        setData('Erreur lors de la récupération des données'); 
+        setData({ error: 'Erreur lors de la récupération des données' });
       }
     };
 
-    fetchData(); 
-  }, []); 
+    if (storedPatient) {
+      fetchData();
+    }
+  }, []);
 
   const handleMouseOver = (e) => {
     e.target.style.backgroundColor = "#1F8A70";
@@ -38,26 +45,26 @@ function Dashboard() {
     <div style={pageStyle}>
       <div style={overlayStyle}></div>
       <div style={topMenuStyle}>
-        <button 
-          style={topMenuButtonStyle} 
-          onMouseOver={handleMouseOver} 
-          onMouseOut={handleMouseOut} 
+        <button
+          style={topMenuButtonStyle}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
           onClick={() => handleNavigation('/')}
         >
           Accueil
         </button>
-        <button 
-          style={topMenuButtonStyle} 
-          onMouseOver={handleMouseOver} 
-          onMouseOut={handleMouseOut} 
+        <button
+          style={topMenuButtonStyle}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
           onClick={() => handleNavigation('/account')}
         >
           Compte
         </button>
-        <button 
-          style={topMenuButtonStyle} 
-          onMouseOver={handleMouseOver} 
-          onMouseOut={handleMouseOut} 
+        <button
+          style={topMenuButtonStyle}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
           onClick={() => handleNavigation('/logout')}
         >
           Déconnexion
@@ -65,50 +72,50 @@ function Dashboard() {
       </div>
       <div style={contentContainerStyle}>
         <div style={menuStyle}>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/appointments')}
           >
             Prendre / Consulter Rendez-vous
           </button>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/medical-records')}
           >
             Dossiers Médicaux
           </button>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/rehab-videos')}
           >
             Vidéo de Rééducation
           </button>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/documents-conferences')}
           >
             Documents et Conférences
           </button>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/disease-updates')}
           >
             Nouveautés dans la Maladie
           </button>
-          <button 
-            style={menuButtonStyle} 
-            onMouseOver={handleMouseOver} 
-            onMouseOut={handleMouseOut} 
+          <button
+            style={menuButtonStyle}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
             onClick={() => handleNavigation('/social-communication')}
           >
             Réseaux Sociaux et Communication
@@ -116,7 +123,74 @@ function Dashboard() {
         </div>
         <div style={contentStyle}>
           <h1 style={titleStyle}>Fiche technique</h1>
-          <p style={messageStyle}>{data ? `Bienvenue sur votre fiche technique : ${data}` : 'Chargement des données...'}</p>
+          {data ? (
+            data.error ? (
+              <p style={messageStyle}>{data.error}</p>
+            ) : (
+              <table style={tableStyle}>
+                <tbody>
+                  {data.patient && data.patient.length > 0 ? (
+                    <React.Fragment>
+                      <tr>
+                        <th style={thStyle}>Nom Complet</th>
+                        <td style={tdStyle}>{data.patient[0].Nomcomplet}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Date de Naissance</th>
+                        <td style={tdStyle}>{new Date(data.patient[0].DateNaissance).toLocaleDateString()}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Email</th>
+                        <td style={tdStyle}>{data.patient[0].Email}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Téléphone</th>
+                        <td style={tdStyle}>{data.patient[0].Telephone}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Adresse</th>
+                        <td style={tdStyle}>{data.patient[0].Adresse}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Groupe Sanguin</th>
+                        <td style={tdStyle}>{data.patient[0].Groupesanguin}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Sexe</th>
+                        <td style={tdStyle}>{data.patient[0].Sexe}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Poids</th>
+                        <td style={tdStyle}>{data.patient[0].Poids}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Taille</th>
+                        <td style={tdStyle}>{data.patient[0].Taille}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Type de Maladie</th>
+                        <td style={tdStyle}>{data.patient[0].TypeDeMaladie}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Antécédent Mère</th>
+                        <td style={tdStyle}>{data.patient[0].AntecedentMere}</td>
+                      </tr>
+                      <tr>
+                        <th style={thStyle}>Antécédent Père</th>
+                        <td style={tdStyle}>{data.patient[0].AntecedentPere}</td>
+                      </tr>
+                    </React.Fragment>
+                  ) : (
+                    <tr>
+                      <td style={tdStyle} colSpan="2">Aucune donnée disponible</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            )
+          ) : (
+            <p style={messageStyle}>Chargement des données...</p>
+          )}
         </div>
       </div>
     </div>
@@ -174,7 +248,7 @@ const contentContainerStyle = {
   display: 'flex',
   flexDirection: 'row',
   flex: 1,
-  marginTop: '60px', // Add margin to avoid overlap with the top menu
+  marginTop: '60px',
 };
 
 const menuStyle = {
@@ -233,6 +307,36 @@ const messageStyle = {
   fontSize: '18px',
   maxWidth: '600px',
   lineHeight: '1.6',
+};
+
+const tableStyle = {
+  width: '60%', 
+  maxWidth: '600px', 
+  borderCollapse: 'collapse',
+  marginTop: '20px',
+  color: '#ffffff',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  borderRadius: '10px',
+  overflow: 'hidden',
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+};
+
+const thStyle = {
+  backgroundColor: '#333333',
+  color: '#ffffff',
+  padding: '15px',
+  borderBottom: '1px solid #555555',
+  textAlign: 'left',
+  fontSize: '16px',
+};
+
+const tdStyle = {
+  padding: '15px',
+  borderBottom: '1px solid #555555',
+  textAlign: 'left',
+  fontSize: '14px',
 };
 
 export default Dashboard;
