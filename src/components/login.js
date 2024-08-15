@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import backgroundImage from "../image/photo_background_page_acceuil.PNG";
 import logoImage from "../image/logo_hemoespoir.PNG";
-import config from '../config'; 
+import Cookies from 'js-cookie';
+import config from '../config';
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -25,7 +26,11 @@ function Login() {
       const data = await response.json();
       setLoading(false);
       if (response.ok && data.patient && data.patient.length > 0) {
-        localStorage.setItem('patient', JSON.stringify(data.patient[0]));
+        const patient = data.patient[0];
+        console.log("Patient Data:", patient); // Debugging: log patient data
+        localStorage.setItem('patient', JSON.stringify(patient));
+        Cookies.set('patientId', patient.Id_Patient, { expires: 7 }); // Store patientId in cookies
+        Cookies.set('medecinId', patient.Id_Medecin, { expires: 7 }); // Store medecinId in cookies
         navigate('/dashboard');
       } else {
         setError(new Error("Nom d'utilisateur ou mot de passe incorrect"));
@@ -192,9 +197,6 @@ const styles = {
     cursor: "pointer",
     marginBottom: "10px",
     fontSize: "14px",
-    "&:hover": {
-      color: "#ff4081",
-    },
   },
   button: {
     backgroundColor: "#4caf50",
@@ -206,9 +208,6 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
     transition: "background-color 0.3s",
-    "&:hover": {
-      backgroundColor: "#45a045",
-    },
   },
   message: {
     marginTop: "20px",
