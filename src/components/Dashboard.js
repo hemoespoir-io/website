@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from '../image/background.PNG';
+import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../image/backgroundfichemedical.PNG';
 import axios from 'axios';
 import config from '../config';
 
 function Dashboard() {
   const [data, setData] = useState(null);
   const [patient, setPatient] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedPatient = JSON.parse(localStorage.getItem('patient'));
@@ -38,7 +40,7 @@ function Dashboard() {
   };
 
   const handleNavigation = (url) => {
-    window.location.href = url;
+    navigate(url);
   };
 
   return (
@@ -84,9 +86,9 @@ function Dashboard() {
             style={menuButtonStyle}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
-            onClick={() => handleNavigation('/medical-records')}
+            onClick={() => handleNavigation('/medicament')}
           >
-            Dossiers Médicaux
+            Médicament Date/Dose
           </button>
           <button
             style={menuButtonStyle}
@@ -100,9 +102,9 @@ function Dashboard() {
             style={menuButtonStyle}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
-            onClick={() => handleNavigation('/documents-conferences')}
+            onClick={() => handleNavigation('/Dossiers Médicaux')}
           >
-            Documents et Conférences
+            Dossiers Médicaux
           </button>
           <button
             style={menuButtonStyle}
@@ -122,7 +124,7 @@ function Dashboard() {
           </button>
         </div>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Fiche technique</h1>
+          <h1 style={titleStyle}>Fiche Medicale </h1>
           {data ? (
             data.error ? (
               <p style={messageStyle}>{data.error}</p>
@@ -177,7 +179,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <th style={thStyle}>Antécédent Père</th>
-                        <td style={tdStyle}>{data.patient[0].AntecedentPere}</td>
+                        <td style={tdStyle}>{data.patient[0].Id_Medecin}</td>
                       </tr>
                     </React.Fragment>
                   ) : (
