@@ -3,15 +3,15 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
+import config from '../config';  // Import config.js
 import backgroundImage from '../image/rendez-vousx.PNG';
 
 const localizer = momentLocalizer(moment);
 
-function BonjourPatient() {
+function RendezvousPatient() {  // Renamed the function to start with an uppercase letter
   const [events, setEvents] = useState([]);
   const [currentRange, setCurrentRange] = useState({ start: moment().startOf('week'), end: moment().endOf('week') });
   const [error, setError] = useState(null);
-  
   
   const patientId = Cookies.get('patientId');
   const medecinId = Cookies.get('medecinId');
@@ -20,8 +20,6 @@ function BonjourPatient() {
     const fetchAppointments = async () => {
       try {
         
-        console.log('ID du patient depuis les cookies:', patientId);
-        console.log('ID du médecin depuis les cookies:', medecinId);
 
         if (!patientId || !medecinId) {
           console.error('ID du patient ou du médecin non trouvé dans les cookies');
@@ -29,12 +27,9 @@ function BonjourPatient() {
           return;
         }
 
-        const startDate = currentRange.start.format('YYYY-MM-DD');
-        const endDate = currentRange.end.format('YYYY-MM-DD');
+        
 
-        console.log(`Fetching appointments for patient ${patientId} and doctor ${medecinId} from ${startDate} to ${endDate}`);
-
-        const response = await fetch('http://127.0.0.1:5000/getAppointment', {
+        const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -82,10 +77,7 @@ function BonjourPatient() {
 
           console.log('Events to display:', events);
           setEvents(events);
-        } else {
-          console.error('Aucun rendez-vous trouvé ou format de données incorrect:', data);
-          setError(new Error('Aucun rendez-vous trouvé.'));
-        }
+        } 
       } catch (error) {
         console.error('Erreur lors de la récupération des rendez-vous:', error);
         setError(error);
@@ -141,9 +133,7 @@ function BonjourPatient() {
   return (
     <div style={pageStyle}>
       <h1 style={titleStyle}>Bienvenue ! Comment puis-je vous aider à planifier votre rendez-vous aujourd'hui ?</h1>
-      {error && <p style={{color: 'red'}}>  {}</p>}
-      <p style={{ color: 'red' }}> {}</p>
-      <p style={{ color: 'red' }}> {}</p>
+      {error && <p style={{color: 'red'}}>  {error.message}</p>}
       <div style={calendarContainerStyle}>
         <Calendar
           localizer={localizer}
@@ -195,4 +185,4 @@ const calendarStyle = {
   height: '100%',
 };
 
-export default BonjourPatient;
+export default RendezvousPatient;
