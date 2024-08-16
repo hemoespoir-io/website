@@ -4,8 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
 import backgroundImage from '../image/rendez-vousx.PNG';
-import config from '../config'; // Import the config file
-
+import config from '../config'; 
 const localizer = momentLocalizer(moment);
 
 function RendezvousPatient() {
