@@ -1,7 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Import the image
 import backgroundImage from 'C:/Users/cele/hemoespoir.io/backup/website/src/image/rendezvousmedecin.PNG';
 
 const DashboardMedecin = () => {
