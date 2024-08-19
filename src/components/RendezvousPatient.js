@@ -18,9 +18,6 @@ function RendezvousPatient() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        console.log('ID du patient depuis les cookies:', patientId);
-        console.log('ID du médecin depuis les cookies:', medecinId);
-
         if (!patientId || !medecinId) {
           console.error('ID du patient ou du médecin non trouvé dans les cookies');
           alert('Aucune donnée de patient ou de médecin trouvée. Veuillez vous reconnecter.');

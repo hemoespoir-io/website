@@ -10,8 +10,6 @@ function DoctorLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
 
     try {
       const response = await fetch('http://127.0.0.1:5000/loginMedecin', {  
@@ -26,14 +24,16 @@ function DoctorLogin() {
       });
 
       const data = await response.json();
-      console.log('Response:', data);
+      console.log('Response status:', response.status);
+      console.log('Response data:', data);
 
       if (response.ok) {
         setErrorMessage('');
         alert('Connexion réussie!');
         navigate('/dashboardMedecin', { state: { medecins: data.medecins } }); 
+     
       } else {
-        setErrorMessage(data.error || 'Nom complet ou mot de passe incorrect!');
+        setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
       }
     } catch (error) {
       console.error('Error:', error);
