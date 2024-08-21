@@ -31,7 +31,7 @@ function DoctorLogin() {
       if (response.ok) {
         setErrorMessage('');
         alert('Connexion réussie!');
-        navigate('/dashboard', { state: { medecins: data.medecins } }); // Pass the medecins data to the dashboard
+        navigate('/dashboardMedecin', { state: { medecins: data.medecins } }); 
       } else {
         setErrorMessage(data.error || 'Nom complet ou mot de passe incorrect!');
       }
