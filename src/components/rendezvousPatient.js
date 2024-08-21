@@ -19,15 +19,15 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        
-
         if (!patientId || !medecinId) {
           console.error('ID du patient ou du médecin non trouvé dans les cookies');
           alert('Aucune donnée de patient ou de médecin trouvée. Veuillez vous reconnecter.');
           return;
         }
 
-        
+        // Définir startDate et endDate en fonction de currentRange
+        const startDate = currentRange.start.format('YYYY-MM-DD');  // Format as needed
+        const endDate = currentRange.end.format('YYYY-MM-DD');      // Format as needed
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
           method: 'POST',
@@ -133,7 +133,7 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
   return (
     <div style={pageStyle}>
       <h1 style={titleStyle}>Bienvenue ! Comment puis-je vous aider à planifier votre rendez-vous aujourd'hui ?</h1>
-      {error && <p style={{color: 'red'}}>  {error.message}</p>}
+      {error && <p style={{color: 'red'}}>{error.message}</p>}
       <div style={calendarContainerStyle}>
         <Calendar
           localizer={localizer}
