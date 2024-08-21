@@ -1,84 +1,136 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import backgroundImage from 'C:/Users/cele/hemoespoir.io/backup/website/src/image/rendezvousmedecin.PNG';
+import React, { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Cookies from 'js-cookie';
+import backgroundImage from '../image/rendez-vousx.PNG';
 
-const DashboardMedecin = () => {
-  const navigate = useNavigate();
+const customStyles = {
+  header: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  timeSlot: {
+    color: 'black',
+  },
+  calendar: {
+    color: 'black',
+  },
+};
 
-  const handleRendezVousClick = () => {
-    navigate('/rendezvous');
+const localizer = momentLocalizer(moment);
+
+const CalendarPage = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const medecinId = Cookies.get('id_medecin');
+    console.log('medecinId:', medecinId);
+
+    if (!medecinId) {
+      console.error('Aucun medecinId trouvé dans les cookies.');
+      return;
+    }
+
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/getAppointmentM', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            medecinId: medecinId,
+            startDate: '2024-08-19',
+            endDate: '2024-08-23',
+          }),
+        });
+
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        if (!response.ok || !data.appointments) {
+          throw new Error('Échec de la récupération des rendez-vous');
+        }
+
+        // Convertir les données récupérées en un format compatible avec react-big-calendar
+        const formattedEvents = data.appointments.map((appointment) => {
+          const start = new Date(appointment.date);
+          const [hours, minutes] = convertTimeString(appointment.heure).split(':');
+          start.setHours(hours);
+          start.setMinutes(minutes);
+
+          const end = new Date(start.getTime() + appointment.duree * 60000);
+
+          return {
+            title: appointment.description,
+            start: start,
+            end: end,
+            allDay: false,
+          };
+        });
+
+        console.log('Formatted Events:', formattedEvents); // Vérifiez les événements formatés
+        setEvents(formattedEvents);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des rendez-vous:', error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const convertTimeString = (time) => {
+    const hours = Math.floor(time / 100);
+    const minutes = time % 100;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   };
 
   return (
-    <div 
-      style={{ 
-        padding: '20px', 
-        textAlign: 'center', 
+    <div
+      style={{
+        height: '100vh',
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
-        height: '100vh', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center',
-        color: '#fff',
-        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
+        color: 'white',
+        textAlign: 'center',
       }}
     >
-      <div 
-        style={{ 
-          backgroundColor: 'rgba(0, 0, 0, 0.6)', 
-          padding: '30px', 
-          borderRadius: '15px',
-          boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.3)',
-          backdropFilter: 'blur(5px)', 
-          maxWidth: '500px', 
-          textAlign: 'center',
-          transition: 'all 0.3s ease-in-out',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.05)';
-          e.currentTarget.style.boxShadow = '0px 12px 20px rgba(0, 0, 0, 0.5)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0px 8px 15px rgba(0, 0, 0, 0.3)';
+      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>
+        Bienvenue ! Comment puis-je vous aider à planifier votre rendez-vous aujourd'hui ?
+      </h1>
+      <div
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          borderRadius: '10px',
+          padding: '20px',
+          width: '80%',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
         }}
       >
-        <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>
-          Bonjour Médecin, vous avez la possibilité de consulter vos prochains rendez-vous en ligne. Cela vous permettra de rester informé(e) de vos consultations à venir et de mieux organiser votre emploi du temps.
-        </h1>
-        <p style={{ fontSize: '18px', marginBottom: '30px' }}>
-          Cliquez ici pour voir vos rendez-vous et gérer vos consultations.
-        </p>
-        <button 
-          onClick={handleRendezVousClick} 
-          style={{
-            padding: '12px 25px', 
-            fontSize: '18px', 
-            cursor: 'pointer',
-            border: 'none',
-            backgroundColor: '#007BFF',
-            color: 'white',
-            borderRadius: '50px',
-            boxShadow: '0px 5px 10px rgba(0, 123, 255, 0.4)',
-            transition: 'all 0.3s ease',
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          defaultView={Views.WORK_WEEK}
+          views={['work_week']}
+          style={{ height: '70vh', backgroundColor: 'transparent', ...customStyles.calendar }}
+          min={new Date(2024, 0, 1, 9, 0)} // Début affiché : 9h
+          max={new Date(2024, 0, 1, 18, 0)} // Fin affichée : 18h
+          components={{
+            timeSlotWrapper: (props) => <div style={customStyles.timeSlot}>{props.children}</div>,
+            dayWrapper: (props) => <div style={customStyles.header}>{props.children}</div>,
           }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = 'scale(1.1)';
-            e.target.style.boxShadow = '0px 8px 15px rgba(0, 123, 255, 0.5)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = 'scale(1)';
-            e.target.style.boxShadow = '0px 5px 10px rgba(0, 123, 255, 0.4)';
-          }}
-        >
-          Voir les rendez-vous
-        </button>
+        />
       </div>
     </div>
   );
 };
 
-export default DashboardMedecin;
+export default CalendarPage;

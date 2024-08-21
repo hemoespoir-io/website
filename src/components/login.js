@@ -27,10 +27,10 @@ function Login() {
       setLoading(false);
       if (response.ok && data.patient && data.patient.length > 0) {
         const patient = data.patient[0];
-        console.log("Patient Data:", patient); // Debugging: log patient data
+        console.log("Patient Data:", patient); 
         localStorage.setItem('patient', JSON.stringify(patient));
-        Cookies.set('patientId', patient.Id_Patient, { expires: 7 }); // Store patientId in cookies
-        Cookies.set('medecinId', patient.Id_Medecin, { expires: 7 }); // Store medecinId in cookies
+        Cookies.set('patientId', patient.Id_Patient, { expires: 7 }); 
+        Cookies.set('medecinId', patient.Id_Medecin, { expires: 7 }); 
         navigate('/dashboard');
       } else {
         setError(new Error("Nom d'utilisateur ou mot de passe incorrect"));

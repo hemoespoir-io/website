@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import backgroundVideo from "../image/videobacke2.mp4";
+//import backgroundVideo from "C:\Users\cele\hemoespoir.io\backup\website\src\image\backgroundaccueil.png";
 import linkedinIcon from "../image/linkedin.png"; 
 import emailIcon from "../image/mail.png"; 
 import facebookIcon from "../image/facebook.png"; 

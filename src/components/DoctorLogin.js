@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import background from '../image/background_med.PNG';
 
 function DoctorLogin() {
@@ -12,28 +13,46 @@ function DoctorLogin() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/loginMedecin', {  
+      const response = await fetch('http://127.0.0.1:5000/loginMedecin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: username,  
+          username: username,
           password: password,
         }),
       });
 
-      const data = await response.json();
-      console.log('Response status:', response.status);
-      console.log('Response data:', data);
+      if (!response.ok) {
+        if (response.status === 401) {
+          setErrorMessage('Nom complet ou mot de passe incorrect!');
+        } else {
+          setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
+        }
+        return;
+      }
 
-      if (response.ok) {
-        setErrorMessage('');
-        alert('Connexion réussie!');
-        navigate('/dashboardMedecin', { state: { medecins: data.medecins } }); 
-     
+      const data = await response.json();
+      console.log('API Response data:', data); // Check the entire response data
+
+      // Access the Id_Medecin inside the medecins array
+      if (data && data.medecins && data.medecins.length > 0) {
+        const medecinId = data.medecins[0].Id_Medecin;  // Access the first medecin's Id_Medecin
+        console.log('medecinId:', medecinId);  // Debugging: Check if the medecinId is correctly retrieved
+
+        // Set the cookie if medecinId exists
+        if (medecinId) {
+          Cookies.set('id_medecin', medecinId, { expires: 30, path: '/' });
+          console.log('Cookie set: id_medecin =', Cookies.get('id_medecin')); // Debugging: Check cookie value
+
+          alert('Connexion réussie!');
+          navigate('/dashboardMedecin', { state: { medecins: data.medecins } });
+        } else {
+          setErrorMessage('Erreur: Identifiant du médecin non trouvé.');
+        }
       } else {
-        setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
+        setErrorMessage('Erreur: Identifiant du médecin non trouvé dans la réponse du serveur.');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -42,63 +61,63 @@ function DoctorLogin() {
   };
 
   return (
-    <div style={{ 
-      backgroundImage: `url(${background})`, 
-      backgroundSize: 'cover', 
-      height: '100vh', 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      color: 'white' 
+    <div style={{
+      backgroundImage: `url(${background})`,
+      backgroundSize: 'cover',
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white'
     }}>
-      <div style={{ 
-        backgroundColor: 'rgba(0, 0, 0, 0.6)', 
-        padding: '40px', 
-        borderRadius: '10px', 
-        textAlign: 'center', 
-        width: '400px' 
+      <div style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        padding: '40px',
+        borderRadius: '10px',
+        textAlign: 'center',
+        width: '400px'
       }}>
         <h1>Connexion Médecin</h1>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ marginBottom: '15px', width: '100%' }}>
-            <input 
-              type="text" 
-              id="username" 
-              placeholder="Nom d'utilisateur" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+            <input
+              type="text"
+              id="username"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               style={{
-                width: '100%', 
-                padding: '15px', 
-                borderRadius: '5px', 
+                width: '100%',
+                padding: '15px',
+                borderRadius: '5px',
                 border: '1px solid #ccc'
               }}
               required
             />
           </div>
           <div style={{ marginBottom: '20px', width: '100%' }}>
-            <input 
-              type="password" 
-              id="password" 
-              placeholder="Mot de passe" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+            <input
+              type="password"
+              id="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               style={{
-                width: '100%', 
-                padding: '15px', 
-                borderRadius: '5px', 
+                width: '100%',
+                padding: '15px',
+                borderRadius: '5px',
                 border: '1px solid #ccc'
               }}
               required
             />
           </div>
-          <button type="submit" style={{ 
-            padding: '15px 30px', 
-            borderRadius: '5px', 
-            border: 'none', 
-            backgroundColor: '#28a745', 
-            color: 'white', 
-            cursor: 'pointer', 
+          <button type="submit" style={{
+            padding: '15px 30px',
+            borderRadius: '5px',
+            border: 'none',
+            backgroundColor: '#28a745',
+            color: 'white',
+            cursor: 'pointer',
             fontSize: '16px'
           }}>Se connecter</button>
         </form>
