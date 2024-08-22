@@ -71,7 +71,6 @@ const CalendarPage = () => {
           throw new Error('Échec de la récupération des rendez-vous');
         }
 
-        // Convertir les données récupérées en un format compatible avec react-big-calendar
         const formattedEvents = data.appointments.map((appointment) => {
           const start = new Date(appointment.date);
           const [hours, minutes] = convertTimeString(appointment.heure).split(':');
@@ -88,7 +87,7 @@ const CalendarPage = () => {
           };
         });
 
-        console.log('Formatted Events:', formattedEvents); // Vérifiez les événements formatés
+        console.log('Formatted Events:', formattedEvents); 
         setEvents(formattedEvents);
       } catch (error) {
         console.error('Erreur lors de la récupération des rendez-vous:', error);
@@ -139,8 +138,8 @@ const CalendarPage = () => {
           defaultView={Views.WORK_WEEK}
           views={{ work_week: true, month: true }}
           style={{ height: '70vh', backgroundColor: 'transparent', ...customStyles.calendar }}
-          min={new Date(2024, 0, 1, 9, 0)} // Début affiché : 9h
-          max={new Date(2024, 0, 1, 18, 0)} // Fin affichée : 18h
+          min={new Date(2024, 0, 1, 9, 0)} 
+          max={new Date(2024, 0, 1, 18, 0)} 
           components={{
             timeSlotWrapper: (props) => <div style={customStyles.timeSlot}>{props.children}</div>,
             dayWrapper: (props) => <div style={customStyles.header}>{props.children}</div>,

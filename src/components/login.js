@@ -30,7 +30,7 @@ function Login() {
         console.log("Patient Data:", patient); 
         localStorage.setItem('patient', JSON.stringify(patient));
         Cookies.set('patientId', patient.Id_Patient, { expires: 7 }); 
-        Cookies.set('medecinId', patient.Id_Medecin, { expires: 7 }); 
+        Cookies.set('medecinId', patient.medecinId, { expires: 7 }); 
         navigate('/dashboard');
       } else {
         setError(new Error("Nom d'utilisateur ou mot de passe incorrect"));

@@ -3,15 +3,16 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
+import config from '../config';  
 import backgroundImage from '../image/rendez-vousx.PNG';
-import config from '../config'; 
+
 const localizer = momentLocalizer(moment);
 
-function RendezvousPatient() {
+function RendezvousPatient() {  
   const [events, setEvents] = useState([]);
   const [currentRange, setCurrentRange] = useState({ start: moment().startOf('week'), end: moment().endOf('week') });
   const [error, setError] = useState(null);
-
+  
   const patientId = Cookies.get('patientId');
   const medecinId = Cookies.get('medecinId');
 
@@ -24,8 +25,9 @@ function RendezvousPatient() {
           return;
         }
 
-        const startDate = currentRange.start.format('YYYY-MM-DD');
-        const endDate = currentRange.end.format('YYYY-MM-DD');
+        
+        const startDate = currentRange.start.format('YYYY-MM-DD');  
+        const endDate = currentRange.end.format('YYYY-MM-DD');     
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
           method: 'POST',
@@ -63,22 +65,19 @@ function RendezvousPatient() {
             end.setMinutes(end.getMinutes() + duree);
 
             return {
-              title: appointment.description || '',
+              title: appointment.description || '', 
               start: start,
               end: end,
               allDay: false,
               status: appointment.patient ? 'patient' : 'reserved',
               medecinId: appointment.medecinId,
-              hasDescription: !!appointment.description,
+              hasDescription: !!appointment.description, 
             };
           });
 
           console.log('Events to display:', events);
           setEvents(events);
-        } else {
-          console.error('Aucun rendez-vous trouvé ou format de données incorrect:', data);
-          setError(new Error('Aucun rendez-vous trouvé.'));
-        }
+        } 
       } catch (error) {
         console.error('Erreur lors de la récupération des rendez-vous:', error);
         setError(error);
@@ -109,11 +108,12 @@ function RendezvousPatient() {
     let boxShadow = '';
 
     if (event.hasDescription) {
-      backgroundColor = '#1E90FF';
+      backgroundColor = '#1E90FF'; 
       borderColor = '#FF8C00';
       boxShadow = '0 4px 8px 0 rgba(255, 140, 0, 0.2), 0 6px 20px 0 rgba(255, 140, 0, 0.19)';
-    } else {
-      backgroundColor = '#1E90FF';
+    }
+    else {
+      backgroundColor = '#FF0000';
       borderColor = '#1C6EA4';
       boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)';
     }
@@ -146,7 +146,7 @@ function RendezvousPatient() {
           max={new Date(2024, 7, 12, 18, 0)}
           style={calendarStyle}
           eventPropGetter={eventPropGetter}
-          onRangeChange={handleRangeChange}
+          onRangeChange={handleRangeChange} 
         />
       </div>
     </div>

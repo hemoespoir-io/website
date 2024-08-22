@@ -35,17 +35,14 @@ function DoctorLogin() {
       }
 
       const data = await response.json();
-      console.log('API Response data:', data); // Check the entire response data
-
-      // Access the Id_Medecin inside the medecins array
+      console.log('API Response data:', data); 
       if (data && data.medecins && data.medecins.length > 0) {
-        const medecinId = data.medecins[0].Id_Medecin;  // Access the first medecin's Id_Medecin
-        console.log('medecinId:', medecinId);  // Debugging: Check if the medecinId is correctly retrieved
+        const medecinId = data.medecins[0].Id_Medecin;  
+        console.log('medecinId:', medecinId); 
 
-        // Set the cookie if medecinId exists
         if (medecinId) {
           Cookies.set('id_medecin', medecinId, { expires: 30, path: '/' });
-          console.log('Cookie set: id_medecin =', Cookies.get('id_medecin')); // Debugging: Check cookie value
+          console.log('Cookie set: id_medecin =', Cookies.get('id_medecin')); 
 
           alert('Connexion réussie!');
           navigate('/dashboardMedecin', { state: { medecins: data.medecins } });
