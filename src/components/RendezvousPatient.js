@@ -27,9 +27,7 @@ function RendezvousPatient() {
         const startDate = currentRange.start.format('YYYY-MM-DD');
         const endDate = currentRange.end.format('YYYY-MM-DD');
 
-        console.log(`Fetching appointments for patient ${patientId} and doctor ${medecinId} from ${startDate} to ${endDate}`);
-
-        const response = await fetch(`${config.BACKEND_URL}getAppointment`, {  
+        const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

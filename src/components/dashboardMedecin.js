@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
 import backgroundImage from '../image/rendez-vousx.PNG';
+import config from '../config'; 
 
 const customStyles = {
   header: {
@@ -15,6 +16,23 @@ const customStyles = {
   },
   calendar: {
     color: 'black',
+    border: '1px solid #ddd',
+    borderRadius: '10px',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+  },
+  event: {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    borderRadius: '5px',
+    padding: '5px',
+    border: 'none',
+  },
+  eventHover: {
+    backgroundColor: '#45a049',
+  },
+  today: {
+    backgroundColor: '#f0f8ff', // Light blue for the current day
   },
 };
 
@@ -119,13 +137,28 @@ const CalendarPage = () => {
           startAccessor="start"
           endAccessor="end"
           defaultView={Views.WORK_WEEK}
-          views={['work_week']}
+          views={{ work_week: true, month: true }}
           style={{ height: '70vh', backgroundColor: 'transparent', ...customStyles.calendar }}
           min={new Date(2024, 0, 1, 9, 0)} // Début affiché : 9h
           max={new Date(2024, 0, 1, 18, 0)} // Fin affichée : 18h
           components={{
             timeSlotWrapper: (props) => <div style={customStyles.timeSlot}>{props.children}</div>,
             dayWrapper: (props) => <div style={customStyles.header}>{props.children}</div>,
+            event: (props) => (
+              <div
+                style={{
+                  ...customStyles.event,
+                  ...(props.isHovered ? customStyles.eventHover : {}),
+                }}
+              >
+                {props.title}
+              </div>
+            ),
+            today: (props) => (
+              <div style={customStyles.today}>
+                {props.children}
+              </div>
+            ),
           }}
         />
       </div>

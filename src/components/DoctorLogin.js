@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import config from '../config';  
 import background from '../image/background_med.PNG';
 
 function DoctorLogin() {
@@ -13,7 +14,7 @@ function DoctorLogin() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/loginMedecin', {
+      const response = await fetch(`${config.BACKEND_URL}loginMedecin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
