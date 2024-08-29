@@ -25,7 +25,6 @@ function RendezvousPatient() {
           return;
         }
 
-        
         const startDate = currentRange.start.format('YYYY-MM-DD');  
         const endDate = currentRange.end.format('YYYY-MM-DD');     
 

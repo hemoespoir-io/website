@@ -32,7 +32,7 @@ const customStyles = {
     backgroundColor: '#45a049',
   },
   today: {
-    backgroundColor: '#f0f8ff', // Light blue for the current day
+    backgroundColor: '#f0f8ff', 
   },
 };
 
@@ -52,15 +52,17 @@ const CalendarPage = () => {
 
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`${config.BACKEND_URL}getAppointmentMedecin`, { 
+        console.log("Fetching appointments...");
+
+        const response = await fetch(`${config.BACKEND_URL}/getAppointmentMedecin`, { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             medecinId: medecinId,
-            startDate: '2024-08-19',
-            endDate: '2024-08-23',
+            startDate: '2024-08-01',  // Utilisation d'une période plus large
+            endDate: '2024-08-31',
           }),
         });
 
@@ -71,7 +73,12 @@ const CalendarPage = () => {
           throw new Error('Échec de la récupération des rendez-vous');
         }
 
+        if (data.appointments.length === 0) {
+          console.warn('No appointments found for the given period.');
+        }
+
         const formattedEvents = data.appointments.map((appointment) => {
+          console.log('Processing appointment:', appointment);
           const start = new Date(appointment.date);
           const [hours, minutes] = convertTimeString(appointment.heure).split(':');
           start.setHours(hours);
