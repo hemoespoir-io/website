@@ -13,5 +13,4 @@ function DoctorHome() {
     </div>
   );
 }
-
 export default DoctorHome;

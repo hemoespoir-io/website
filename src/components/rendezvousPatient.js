@@ -3,18 +3,21 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
-import config from '../config';  // Import config.js
+import config from '../config';  
+import { useNavigate } from 'react-router-dom';  // Use useNavigate instead of useHistory
 import backgroundImage from '../image/rendez-vousx.PNG';
 
 const localizer = momentLocalizer(moment);
 
-function RendezvousPatient() {  // Renamed the function to start with an uppercase letter
+function RendezvousPatient() {  
   const [events, setEvents] = useState([]);
   const [currentRange, setCurrentRange] = useState({ start: moment().startOf('week'), end: moment().endOf('week') });
   const [error, setError] = useState(null);
   
   const patientId = Cookies.get('patientId');
   const medecinId = Cookies.get('medecinId');
+  
+  const navigate = useNavigate();  // Use useNavigate for navigation
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -25,12 +28,11 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
           return;
         }
 
-        // Définir startDate et endDate en fonction de currentRange
-        const startDate = currentRange.start.format('YYYY-MM-DD');  // Format as needed
-        const endDate = currentRange.end.format('YYYY-MM-DD');      // Format as needed
+        const startDate = currentRange.start.format('YYYY-MM-DD');  
+        const endDate = currentRange.end.format('YYYY-MM-DD');     
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -113,7 +115,7 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
       boxShadow = '0 4px 8px 0 rgba(255, 140, 0, 0.2), 0 6px 20px 0 rgba(255, 140, 0, 0.19)';
     }
     else {
-      backgroundColor = '#1E90FF';
+      backgroundColor = '#FF0000';
       borderColor = '#1C6EA4';
       boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)';
     }
@@ -128,6 +130,10 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
       boxShadow: boxShadow,
     };
     return { style };
+  };
+
+  const handleAddAppointment = () => {
+    navigate('/add-appointment');  // Use navigate instead of history.push
   };
 
   return (
@@ -149,6 +155,7 @@ function RendezvousPatient() {  // Renamed the function to start with an upperca
           onRangeChange={handleRangeChange} 
         />
       </div>
+      <button style={buttonStyle} onClick={handleAddAppointment}>Ajouter un rendez-vous</button>
     </div>
   );
 }
@@ -183,6 +190,19 @@ const calendarContainerStyle = {
 
 const calendarStyle = {
   height: '100%',
+};
+
+const buttonStyle = {
+  marginTop: '20px',
+  padding: '10px 20px',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  backgroundColor: '#1E90FF',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
 };
 
 export default RendezvousPatient;
