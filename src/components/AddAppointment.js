@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import backgroundImage from '../image/backaddrdv.jpg';  
+import backgroundImage from '../image/backaddrdv.jpg';  // Ensure this path is correct
+
 function AddAppointment() {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -7,19 +8,18 @@ function AddAppointment() {
   const [description, setDescription] = useState('');
   const [message, setMessage] = useState('');
 
- 
-  const config = {
-    BACKEND_URL: "http://localhost:5000/",
-    DB_HOST: "localhost",
-    DB_USER: "root",
-    DB_PASSWD: "",
-    DB_DATABASE: "pfe"
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     
     const appointmentData = {
+      config: {
+        DB_HOST: "localhost",
+        DB_USER: "root",
+        DB_PASSWD: "",
+        DB_DATABASE: "pfe"
+      },
+      medecinId: 222,  
+      patientId: 121,  
       date: date,
       heure: time,
       description: description,
@@ -27,7 +27,7 @@ function AddAppointment() {
     };
 
     try {
-      const response = await fetch(`${config.BACKEND_URL}rendezvous`, {
+      const response = await fetch('http://127.0.0.1:5000/api/rendezvous', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
