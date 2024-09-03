@@ -5,8 +5,9 @@ import Login from './login';
 import Dashboard from './Dashboard';
 import DoctorLogin from './DoctorLogin';
 import FicheTechnique from './FicheTechnique';
-import RendezvousPatient from './RendezvousPatient';  // Importation modifiée
+import RendezvousPatient from './rendezvousPatient';  
 import DashboardMedecin from './dashboardMedecin';
+
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/doctor-login" element={<DoctorLogin />} />
       <Route path="/fiche-technique" element={<FicheTechnique />} />
-      <Route path="/appointments" element={<RendezvousPatient />} />  {/* Composant modifié */}
+      <Route path="/appointments" element={<RendezvousPatient />} />  {}
     </Routes>
   );
 }

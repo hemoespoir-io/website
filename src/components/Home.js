@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import backgroundVideo from "../image/videobacke2.mp4";
+import backgroundImage from "../image/backgEEEE.jpg";  
 import linkedinIcon from "../image/linkedin.png"; 
 import emailIcon from "../image/mail.png"; 
 import facebookIcon from "../image/facebook.png"; 
@@ -100,15 +100,9 @@ const styles = {
     fontFamily: "'Roboto', sans-serif",
     color: "#333333",
     overflow: "hidden",
-  },
-  videoBackground: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    zIndex: -1,
+    backgroundImage: `url(${backgroundImage})`, 
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
   contentContainer: {
     position: "relative",
