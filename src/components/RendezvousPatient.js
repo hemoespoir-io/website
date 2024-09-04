@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
 import config from '../config';  
-import { useNavigate } from 'react-router-dom';  // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';  
 import backgroundImage from '../image/rendez-vousx.PNG';
 
 const localizer = momentLocalizer(moment);
@@ -17,7 +17,7 @@ function RendezvousPatient() {
   const patientId = Cookies.get('patientId');
   const medecinId = Cookies.get('medecinId');
   
-  const navigate = useNavigate();  // Use useNavigate for navigation
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -32,7 +32,7 @@ function RendezvousPatient() {
         const endDate = currentRange.end.format('YYYY-MM-DD');     
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -133,7 +133,7 @@ function RendezvousPatient() {
   };
 
   const handleAddAppointment = () => {
-    navigate('/add-appointment');  // Use navigate instead of history.push
+    navigate('/add-appointment');  
   };
 
   return (
