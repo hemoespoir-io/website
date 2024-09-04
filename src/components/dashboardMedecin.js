@@ -55,13 +55,21 @@ const CalendarPage = () => {
         console.log("Fetching appointments...");
 
         const response = await fetch(`${config.BACKEND_URL}/getAppointmentMedecin`, { 
+<<<<<<< HEAD
           method: 'POST',
+=======
+          method: 'GET',
+>>>>>>> 017ddfd (feat-15)
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             medecinId: medecinId,
+<<<<<<< HEAD
             startDate: '2024-08-01',  // Utilisation d'une période plus large
+=======
+            startDate: '2024-08-01',  
+>>>>>>> 017ddfd (feat-15)
             endDate: '2024-08-31',
           }),
         });

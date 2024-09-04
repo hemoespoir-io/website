@@ -138,4 +138,8 @@ function DoctorLogin() {
   );
 }
 
+<<<<<<< HEAD
 export default DoctorLogin;
+=======
+export default DoctorLogin;  
+>>>>>>> 017ddfd (feat-15)
