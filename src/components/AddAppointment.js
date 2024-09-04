@@ -26,7 +26,7 @@ function AddAppointment() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/rendezvous', {
+      const response = await fetch(`${config.BACKEND_URL}/rendezvous`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
