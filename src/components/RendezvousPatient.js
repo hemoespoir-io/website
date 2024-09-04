@@ -3,12 +3,12 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Cookies from 'js-cookie';
-import config from '../config';  
+import config from '../config';  // Import config.js
 import backgroundImage from '../image/rendez-vousx.PNG';
 
 const localizer = momentLocalizer(moment);
 
-function RendezvousPatient() {  
+function RendezvousPatient() {  // Renamed the function to start with an uppercase letter
   const [events, setEvents] = useState([]);
   const [currentRange, setCurrentRange] = useState({ start: moment().startOf('week'), end: moment().endOf('week') });
   const [error, setError] = useState(null);
@@ -25,8 +25,9 @@ function RendezvousPatient() {
           return;
         }
 
-        const startDate = currentRange.start.format('YYYY-MM-DD');  
-        const endDate = currentRange.end.format('YYYY-MM-DD');     
+        // Définir startDate et endDate en fonction de currentRange
+        const startDate = currentRange.start.format('YYYY-MM-DD');  // Format as needed
+        const endDate = currentRange.end.format('YYYY-MM-DD');      // Format as needed
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
           method: 'POST',
@@ -112,7 +113,7 @@ function RendezvousPatient() {
       boxShadow = '0 4px 8px 0 rgba(255, 140, 0, 0.2), 0 6px 20px 0 rgba(255, 140, 0, 0.19)';
     }
     else {
-      backgroundColor = '#FF0000';
+      backgroundColor = '#1E90FF';
       borderColor = '#1C6EA4';
       boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)';
     }
