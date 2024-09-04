@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import backgroundImage from '../image/backaddrdv.jpg'; 
+import backgroundImage from '../image/backaddrdv.jpg';  // Ensure this path is correct
 
 function AddAppointment() {
   const [date, setDate] = useState('');
@@ -18,7 +18,7 @@ function AddAppointment() {
         DB_PASSWD: "",
         DB_DATABASE: "pfe"
       },
-      
+     
       date: date,
       heure: time,
       description: description,
