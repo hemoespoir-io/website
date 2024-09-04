@@ -32,7 +32,7 @@ function RendezvousPatient() {
         const endDate = currentRange.end.format('YYYY-MM-DD');     
 
         const response = await fetch(`${config.BACKEND_URL}getAppointment`, { 
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -136,6 +136,10 @@ function RendezvousPatient() {
     navigate('/add-appointment');  
   };
 
+  const handleDeleteAppointment = () => {
+    navigate('/delete-appointment');
+  };
+
   return (
     <div style={pageStyle}>
       <h1 style={titleStyle}>Bienvenue ! Comment puis-je vous aider à planifier votre rendez-vous aujourd'hui ?</h1>
@@ -155,7 +159,10 @@ function RendezvousPatient() {
           onRangeChange={handleRangeChange} 
         />
       </div>
-      <button style={buttonStyle} onClick={handleAddAppointment}>Ajouter un rendez-vous</button>
+      <div style={buttonContainerStyle}>
+        <button style={buttonStyle} onClick={handleAddAppointment}>Ajouter un rendez-vous</button>
+        <button style={deleteButtonStyle} onClick={handleDeleteAppointment}>Supprimer un rendez-vous</button>
+      </div>
     </div>
   );
 }
@@ -192,12 +199,30 @@ const calendarStyle = {
   height: '100%',
 };
 
-const buttonStyle = {
+const buttonContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '300px',
   marginTop: '20px',
+};
+
+const buttonStyle = {
   padding: '10px 20px',
   fontSize: '16px',
   fontWeight: 'bold',
   backgroundColor: '#1E90FF',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+};
+
+const deleteButtonStyle = {
+  padding: '10px 20px',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  backgroundColor: '#FF0000',
   color: '#fff',
   border: 'none',
   borderRadius: '5px',

@@ -8,7 +8,7 @@ import FicheTechnique from './FicheTechnique';
 import RendezvousPatient from './rendezvousPatient';  
 import DashboardMedecin from './dashboardMedecin';
 import AddAppointment from './AddAppointment';
-
+import DeleteAppointment from './DeleteAppointment';
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
       <Route path="/fiche-technique" element={<FicheTechnique />} />
       <Route path="/add-appointment" element={<AddAppointment />} />
       <Route path="/appointments" element={<RendezvousPatient />} />
+      <Route path="/delete-appointment" element={<DeleteAppointment />} />
     </Routes>
   );
 }

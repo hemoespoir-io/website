@@ -55,7 +55,7 @@ const CalendarPage = () => {
         console.log("Fetching appointments...");
 
         const response = await fetch(`${config.BACKEND_URL}/getAppointmentMedecin`, { 
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
